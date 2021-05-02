@@ -1,4 +1,4 @@
-package com.github.yamagl.http;
+package com.github.yamagl.stw.http;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;

@@ -1,7 +1,7 @@
-package com.github.yamagl;
+package com.github.yamagl.stw;
 
-import com.github.yamagl.http.HttpHelloWorldServerHandler;
-import com.github.yamagl.socksproxy.SocksServerHandler;
+import com.github.yamagl.stw.http.HttpHelloWorldServerHandler;
+import com.github.yamagl.stw.socks5.SocksServerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;

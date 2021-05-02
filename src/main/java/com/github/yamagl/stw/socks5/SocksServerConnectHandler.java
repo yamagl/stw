@@ -1,4 +1,4 @@
-package com.github.yamagl.socksproxy;
+package com.github.yamagl.stw.socks5;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;

@@ -1,4 +1,4 @@
-package com.github.yamagl.socksproxy;
+package com.github.yamagl.stw.socks5;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

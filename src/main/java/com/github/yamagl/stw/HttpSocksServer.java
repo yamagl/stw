@@ -1,4 +1,4 @@
-package com.github.yamagl;
+package com.github.yamagl.stw;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;

@@ -1,4 +1,4 @@
-package com.github.yamagl.socksproxy;
+package com.github.yamagl.stw.socks5;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
