@@ -1,6 +1,7 @@
-package com.github.yamagl.socksproxy;
+package com.github.yamagl;
 
 import com.github.yamagl.http.HttpHelloWorldServerHandler;
+import com.github.yamagl.socksproxy.SocksServerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
@@ -18,14 +19,14 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.List;
 
-public class SocksHttpPortUnificationServerHandler extends ByteToMessageDecoder {
+public class HttpSocksPortUnificationServerHandler extends ByteToMessageDecoder {
 
     private static final InternalLogger logger =
-            InternalLoggerFactory.getInstance(SocksHttpPortUnificationServerHandler.class);
+            InternalLoggerFactory.getInstance(HttpSocksPortUnificationServerHandler.class);
 
     private final Socks5ServerEncoder socks5encoder;
 
-    public SocksHttpPortUnificationServerHandler() {
+    public HttpSocksPortUnificationServerHandler() {
         this.socks5encoder = ObjectUtil.checkNotNull(Socks5ServerEncoder.DEFAULT, "socks5encoder");
     }
 

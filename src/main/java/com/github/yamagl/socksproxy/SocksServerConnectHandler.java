@@ -3,11 +3,6 @@ package com.github.yamagl.socksproxy;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.socks.SocksMessage;
-import io.netty.handler.codec.socksx.SocksPortUnificationServerHandler;
-import io.netty.handler.codec.socksx.v4.DefaultSocks4CommandResponse;
-import io.netty.handler.codec.socksx.v4.Socks4CommandRequest;
-import io.netty.handler.codec.socksx.v4.Socks4CommandStatus;
 import io.netty.handler.codec.socksx.v5.DefaultSocks5CommandResponse;
 import io.netty.handler.codec.socksx.v5.Socks5CommandRequest;
 import io.netty.handler.codec.socksx.v5.Socks5CommandStatus;
@@ -75,10 +70,7 @@ public class SocksServerConnectHandler extends SimpleChannelInboundHandler<Socks
             b.connect(request.dstAddr(), request.dstPort()).addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    if (future.isSuccess()) {
-                        // Connection established use handler provided results
-                    } else {
-                        // Close the connection if the connection attempt has failed.
+                    if (!future.isSuccess()) {
                         ctx.channel().writeAndFlush(
                                 new DefaultSocks5CommandResponse(Socks5CommandStatus.FAILURE, request.dstAddrType()));
                         SocksServerUtils.closeOnFlush(ctx.channel());

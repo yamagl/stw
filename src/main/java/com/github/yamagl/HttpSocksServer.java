@@ -1,4 +1,4 @@
-package com.github.yamagl.socksproxy;
+package com.github.yamagl;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
@@ -9,9 +9,9 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.Slf4JLoggerFactory;
 
-public class SocksServer {
-//    static final int PORT = Integer.parseInt(System.getProperty("port", "1080"));
-    static final int PORT = 9503;
+public class HttpSocksServer {
+
+    static final int PORT = Integer.parseInt(System.getProperty("port", "9503"));
 
     public static void main(String[] args) throws Exception {
         InternalLoggerFactory.setDefaultFactory(Slf4JLoggerFactory.INSTANCE);
@@ -22,11 +22,12 @@ public class SocksServer {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.DEBUG))
-                    .childHandler(new SocksServerInitializer());
+                    .childHandler(new HttpSocksServerInitializer());
             b.bind(PORT).sync().channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
     }
+
 }
