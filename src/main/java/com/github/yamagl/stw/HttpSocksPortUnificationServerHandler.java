@@ -1,6 +1,6 @@
 package com.github.yamagl.stw;
 
-import com.github.yamagl.stw.http.HttpHelloWorldServerHandler;
+import com.github.yamagl.stw.http.HttpServerHandler;
 import com.github.yamagl.stw.socks5.SocksServerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,7 +31,7 @@ public class HttpSocksPortUnificationServerHandler extends ByteToMessageDecoder 
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
         final int readerIndex = in.readerIndex();
         if (in.writerIndex() == readerIndex) {
             return;
@@ -65,7 +65,7 @@ public class HttpSocksPortUnificationServerHandler extends ByteToMessageDecoder 
     private void removeHttpPipeline(ChannelPipeline p) {
         p.remove(HttpServerCodec.class);
         p.remove(HttpServerExpectContinueHandler.class);
-        p.remove(HttpHelloWorldServerHandler.class);
+        p.remove(HttpServerHandler.class);
     }
 
     private static void logKnownVersion(ChannelHandlerContext ctx, SocksVersion version) {

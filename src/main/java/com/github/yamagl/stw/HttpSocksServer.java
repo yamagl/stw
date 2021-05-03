@@ -22,7 +22,7 @@ public class HttpSocksServer {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.DEBUG))
-                    .childHandler(new HttpSocksServerInitializer());
+                    .childHandler(new HttpSocksServerInitializer("www.baidu.com", 80));
             b.bind(PORT).sync().channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
