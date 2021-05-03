@@ -41,7 +41,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
             b.connect(host, port).addListener((ChannelFutureListener) future -> {
                 if (future.isSuccess()) {
                     HttpRequest outboundReq = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/");
-                    outboundReq.headers().set(HOST, "www.baidu.com");
+                    outboundReq.headers().set(HOST, host);
                     outboundReq.headers().set(ACCEPT, "*/*");
                     future.channel().writeAndFlush(outboundReq);
                     future.channel().closeFuture().sync();
