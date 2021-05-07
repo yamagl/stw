@@ -1,8 +1,10 @@
 package com.github.yamagl.stw.http;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.logging.LogLevel;
@@ -13,7 +15,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import static io.netty.handler.codec.http.HttpHeaderNames.*;
+import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
 
 public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     private final Bootstrap b = new Bootstrap();
