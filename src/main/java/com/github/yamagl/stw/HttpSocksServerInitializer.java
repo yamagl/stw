@@ -4,6 +4,7 @@ import com.github.yamagl.stw.http.HttpServerHandler;
 import com.github.yamagl.stw.socks5.SocksServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.HttpServerExpectContinueHandler;
 import io.netty.handler.logging.LogLevel;
@@ -27,6 +28,7 @@ public class HttpSocksServerInitializer extends ChannelInitializer<SocketChannel
         ch.pipeline().addLast(SocksServerHandler.INSTANCE);
         ch.pipeline().addLast(new HttpServerCodec());
         ch.pipeline().addLast(new HttpServerExpectContinueHandler());
+        ch.pipeline().addLast(new HttpObjectAggregator(1048576));
         ch.pipeline().addLast(new HttpServerHandler(host, port));
     }
 }

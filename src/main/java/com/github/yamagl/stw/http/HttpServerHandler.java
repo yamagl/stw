@@ -1,11 +1,17 @@
 package com.github.yamagl.stw.http;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.*;
 
@@ -13,6 +19,8 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     private final Bootstrap b = new Bootstrap();
     private final String host;
     private final int port;
+    private static final InternalLogger logger =
+            InternalLoggerFactory.getInstance(HttpServerHandler.class);
 
     public HttpServerHandler(String host, int port) {
         this.host = host;
@@ -26,7 +34,13 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) {
-        if (msg instanceof HttpRequest) {
+        if (msg instanceof FullHttpRequest) {
+            final FullHttpRequest inboundReq = (FullHttpRequest) msg;
+
+            String content = inboundReq.content().toString(Charset.defaultCharset());
+
+            logger.info(content);
+
             b.group(ctx.channel().eventLoop())
                     .channel(ctx.channel().getClass())
                     .handler(new ChannelInitializer<SocketChannel> () {
@@ -40,9 +54,11 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
             b.connect(host, port).addListener((ChannelFutureListener) future -> {
                 if (future.isSuccess()) {
-                    HttpRequest outboundReq = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/");
+                    FullHttpRequest outboundReq = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, inboundReq.method(), inboundReq.uri());
+                    outboundReq.headers().setAll(inboundReq.headers());
                     outboundReq.headers().set(HOST, host);
-                    outboundReq.headers().set(ACCEPT, "*/*");
+                    outboundReq.content().writeBytes(content.getBytes(StandardCharsets.UTF_8));
+
                     future.channel().writeAndFlush(outboundReq);
                     future.channel().closeFuture().sync();
                 } else {
